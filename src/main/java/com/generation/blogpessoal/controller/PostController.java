@@ -36,7 +36,6 @@ public class PostController {
         return ResponseEntity.ok(postRepository.findAllByTitleContainingIgnoreCase(title));
     }
 
-//    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @PostMapping
     public ResponseEntity<Post> create(@Valid @RequestBody Post post){
         return ResponseEntity.status(HttpStatus.CREATED)
