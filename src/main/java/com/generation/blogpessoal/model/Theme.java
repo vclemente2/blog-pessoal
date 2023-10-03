@@ -20,9 +20,9 @@ public class Theme {
     @Size(max = 255, message = "The name must not be longer than 255 characters.")
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "theme", cascade = CascadeType.REMOVE)
-    @JsonIgnoreProperties("theme")
-    private List<Post> posts;
+        @OneToMany(fetch = FetchType.LAZY, mappedBy = "theme", cascade = CascadeType.REMOVE)
+        @JsonIgnoreProperties("theme")
+        private List<Post> posts;
 
     public List<Post> getPosts() {
         return posts;

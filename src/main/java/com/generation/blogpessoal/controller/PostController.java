@@ -45,7 +45,7 @@ public class PostController {
     @PutMapping
     public ResponseEntity<Post> update(@Valid @RequestBody Post post){
         if (post.getId() == null)
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "O Campo 'id' é obrigatório.");
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Id field is required.");
 
         return postRepository.findById(post.getId())
                 .map(response -> ResponseEntity.status(HttpStatus.OK)
@@ -59,7 +59,7 @@ public class PostController {
         Optional<Post> post = postRepository.findById(id);
 
         if(post.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found.");
 
         postRepository.deleteById(id);
     }
