@@ -1,7 +1,9 @@
 package com.generation.blogpessoal.controller;
 
 import com.generation.blogpessoal.model.Post;
+import com.generation.blogpessoal.model.Theme;
 import com.generation.blogpessoal.repository.PostRepository;
+import com.generation.blogpessoal.repository.ThemeRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,9 @@ import java.util.Optional;
 public class PostController {
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private ThemeRepository themeRepository;
 
     @GetMapping
     public ResponseEntity<List<Post>> getAll(){
@@ -38,6 +43,14 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Post> create(@Valid @RequestBody Post post){
+        if(post.getTheme() == null)
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Theme field is required.");
+
+        Optional<Theme> theme = themeRepository.findById(post.getTheme().getId());
+
+        if(theme.isEmpty())
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "There is no theme registered with this id.");
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(postRepository.save(post));
     }
@@ -47,10 +60,18 @@ public class PostController {
         if (post.getId() == null)
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Id field is required.");
 
-        return postRepository.findById(post.getId())
-                .map(response -> ResponseEntity.status(HttpStatus.OK)
-                        .body(postRepository.save(post)))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        if (postRepository.existsById(post.getId())){
+            if (post.getTheme() == null)
+                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Theme field is required.");
+
+            if (themeRepository.existsById(post.getTheme().getId())){
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(postRepository.save(post));
+            }
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "There is no theme registered with this id.");
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
