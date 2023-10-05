@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,9 +25,21 @@ public class PostController {
     @Autowired
     private ThemeRepository themeRepository;
 
-    @GetMapping
-    public ResponseEntity<List<Post>> getAll(){
-        return ResponseEntity.ok(postRepository.findAll());
+    @GetMapping()
+    public ResponseEntity<List<Post>> getAll(@RequestParam(name = "titulo", required = false) String title, @RequestParam(name = "descricao", required = false) String content){
+
+        List<Post> posts;
+
+        if(title != null && content != null)
+            posts = postRepository.findAllByTitleContainingAndContentContainingIgnoreCase(title, content);
+        else if (title != null)
+            posts = postRepository.findAllByTitleContainingIgnoreCase(title);
+        else if (content != null)
+            posts = postRepository.findAllByContentContainingIgnoreCase(content);
+        else
+            posts = postRepository.findAll();
+
+        return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/{id}")
