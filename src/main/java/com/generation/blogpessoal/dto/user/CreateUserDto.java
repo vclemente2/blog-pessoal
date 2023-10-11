@@ -15,7 +15,7 @@ public record CreateUserDto(
         String email,
 
         @NotBlank(message = "The password field is required.")
-        @Size(min = 5, max = 30, message = "The password must be between 3 and 255 characters long.")
+        @Size(min = 5, max = 30, message = "The password must be between 5 and 30 characters long.")
         String password,
 
         @Size(max = 5000, message = "The image field must be shorter than 5000 characters.")

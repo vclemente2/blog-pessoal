@@ -1,6 +1,7 @@
 package com.generation.blogpessoal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.generation.blogpessoal.dto.user.CreateUserDto;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -20,7 +21,17 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties("user")
     private List<Post> posts;
-    
+
+    public User(CreateUserDto data) {
+        this.name = data.name();
+        this.email = data.email();
+        this.password = data.password();
+        this.image = data.image();
+    }
+
+    public User() {
+    }
+
     public Long getId() {
         return id;
     }
