@@ -2,8 +2,9 @@ package com.generation.blogpessoal.controller;
 
 import com.generation.blogpessoal.dto.security.LoginDataDto;
 import com.generation.blogpessoal.dto.security.TokenDataDto;
+import com.generation.blogpessoal.dto.user.BodyDataUpdateUserDto;
+import com.generation.blogpessoal.dto.user.CompleteUpdateUserDto;
 import com.generation.blogpessoal.dto.user.CreateUserDto;
-import com.generation.blogpessoal.dto.user.UpdateUserDto;
 import com.generation.blogpessoal.dto.user.UserInfoDto;
 import com.generation.blogpessoal.service.UserService;
 import jakarta.validation.Valid;
@@ -50,14 +51,16 @@ public class UserController {
 
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity<UserInfoDto> update(@RequestHeader("Authorization") String token, @PathVariable Long id, @Valid @RequestBody UpdateUserDto data) {
-        return ResponseEntity.ok(userService.update(token, id, data));
+    public ResponseEntity<UserInfoDto> update(@RequestHeader("Authorization") String token, @PathVariable Long id, @Valid @RequestBody BodyDataUpdateUserDto data) {
+        CompleteUpdateUserDto updateUserDto = new CompleteUpdateUserDto(data, id, token);
+        return ResponseEntity.ok(userService.update(updateUserDto));
     }
 
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id, @RequestHeader("Authorization") String token) {
-        userService.destroy(id, token);
+        CompleteUpdateUserDto updateUserDto = new CompleteUpdateUserDto(id, token);
+        userService.destroy(updateUserDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
