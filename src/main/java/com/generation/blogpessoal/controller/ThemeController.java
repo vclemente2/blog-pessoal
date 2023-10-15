@@ -1,7 +1,9 @@
 package com.generation.blogpessoal.controller;
 
-import com.generation.blogpessoal.model.Theme;
-import com.generation.blogpessoal.repository.ThemeRepository;
+import com.generation.blogpessoal.dto.theme.CreateThemeDto;
+import com.generation.blogpessoal.dto.theme.ThemeInfoDto;
+import com.generation.blogpessoal.dto.theme.UpdateThemeDto;
+import com.generation.blogpessoal.service.ThemeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,58 +12,48 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/temas")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ThemeController {
     @Autowired
-    private ThemeRepository themeRepository;
+    private ThemeService themeService;
 
     @GetMapping
-    public ResponseEntity<List<Theme>> getAll() { return ResponseEntity.ok(themeRepository.findAll()); }
+    public ResponseEntity<List<ThemeInfoDto>> getAll() {
+        return ResponseEntity.ok(themeService.findAll());
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Theme> getById(@PathVariable Long id) {
-        return themeRepository.findById(id)
-                .map(response->ResponseEntity.ok(response))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ResponseEntity<ThemeInfoDto> getById(@PathVariable Long id) {
+        ThemeInfoDto theme = themeService.findById(id);
+        if (theme == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Theme not found.");
+
+        return ResponseEntity.ok(theme);
     }
 
     @GetMapping("/descricao/{name}")
-    public ResponseEntity<List<Theme>> getAllByName(@PathVariable String name){
-        return ResponseEntity.ok(themeRepository.findAllByNameContainingIgnoreCase(name));
+    public ResponseEntity<List<ThemeInfoDto>> getAllByName(@PathVariable String name) {
+        return ResponseEntity.ok(themeService.findAllByName(name));
     }
 
     @PostMapping
-    public ResponseEntity<Theme> create(@Valid @RequestBody Theme theme){
-        Optional<Theme> alreadyExistingTheme = themeRepository.findByNameIgnoreCase(theme.getName());
-
-        if(alreadyExistingTheme.isPresent())
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "There is already a registered theme with this name.");
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(themeRepository.save(theme));
+    public ResponseEntity<ThemeInfoDto> create(@Valid @RequestBody CreateThemeDto theme) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(themeService.create(theme));
     }
 
     @PutMapping
-    public ResponseEntity<Theme> update(@Valid @RequestBody Theme theme){
-        if(theme.getId() == null)
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Id field is required." );
-
-     return themeRepository.findById(theme.getId())
-                .map((response)->ResponseEntity.ok(themeRepository.save(theme)))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ResponseEntity<ThemeInfoDto> update(@Valid @RequestBody UpdateThemeDto theme) {
+        return ResponseEntity.ok(themeService.update(theme));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity destroy(@PathVariable Long id){
-       Optional<Theme> theme = themeRepository.findById(id);
+    public ResponseEntity destroy(@PathVariable Long id) {
+        UpdateThemeDto deleteObj = new UpdateThemeDto(id);
 
-       if(theme.isEmpty())
-           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Theme not found.");
-
-       themeRepository.delete(theme.get());
-       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        themeService.destroy(deleteObj);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
