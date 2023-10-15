@@ -1,6 +1,8 @@
 package com.generation.blogpessoal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.generation.blogpessoal.dto.theme.CreateThemeDto;
+import com.generation.blogpessoal.dto.theme.UpdateThemeDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -20,9 +22,21 @@ public class Theme {
     @Size(max = 255, message = "The name must not be longer than 255 characters.")
     private String name;
 
-        @OneToMany(fetch = FetchType.LAZY, mappedBy = "theme", cascade = CascadeType.REMOVE)
-        @JsonIgnoreProperties("theme")
-        private List<Post> posts;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "theme", cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties("theme")
+    private List<Post> posts;
+
+    public Theme(CreateThemeDto data) {
+        this.name = data.name();
+    }
+
+    public Theme(UpdateThemeDto data) {
+        this.id = data.id();
+        this.name = data.name();
+    }
+
+    public Theme() {
+    }
 
     public List<Post> getPosts() {
         return posts;
@@ -32,11 +46,11 @@ public class Theme {
         this.posts = posts;
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
