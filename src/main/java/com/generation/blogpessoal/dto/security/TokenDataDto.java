@@ -1,6 +1,6 @@
 package com.generation.blogpessoal.dto.security;
 
-public record tokenDataDto(
+public record TokenDataDto(
         String token
 ) {
 }
