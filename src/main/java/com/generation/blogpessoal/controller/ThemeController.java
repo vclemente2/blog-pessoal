@@ -1,13 +1,14 @@
 package com.generation.blogpessoal.controller;
 
-import com.generation.blogpessoal.dto.theme.CreateThemeDto;
-import com.generation.blogpessoal.dto.theme.ThemeInfoDto;
-import com.generation.blogpessoal.dto.theme.UpdateThemeDto;
+import com.generation.blogpessoal.domain.dto.theme.CreateThemeDto;
+import com.generation.blogpessoal.domain.dto.theme.ThemeInfoDto;
+import com.generation.blogpessoal.domain.dto.theme.UpdateThemeDto;
 import com.generation.blogpessoal.service.ThemeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -39,16 +40,19 @@ public class ThemeController {
         return ResponseEntity.ok(themeService.findAllByName(name));
     }
 
+    @Transactional
     @PostMapping
     public ResponseEntity<ThemeInfoDto> create(@Valid @RequestBody CreateThemeDto theme) {
         return ResponseEntity.status(HttpStatus.CREATED).body(themeService.create(theme));
     }
 
+    @Transactional
     @PutMapping
     public ResponseEntity<ThemeInfoDto> update(@Valid @RequestBody UpdateThemeDto theme) {
         return ResponseEntity.ok(themeService.update(theme));
     }
 
+    @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity destroy(@PathVariable Long id) {
         UpdateThemeDto deleteObj = new UpdateThemeDto(id);

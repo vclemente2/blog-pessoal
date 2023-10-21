@@ -1,10 +1,8 @@
 package com.generation.blogpessoal.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.generation.blogpessoal.dto.user.CreateUserDto;
-import com.generation.blogpessoal.dto.user.UserInfoDto;
-import com.generation.blogpessoal.repository.UserRepository;
+import com.generation.blogpessoal.domain.dto.user.CreateUserDto;
+import com.generation.blogpessoal.domain.dto.user.UserInfoDto;
+import com.generation.blogpessoal.domain.repository.UserRepository;
 import com.generation.blogpessoal.service.UserService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

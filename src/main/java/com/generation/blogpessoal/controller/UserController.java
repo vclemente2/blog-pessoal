@@ -1,11 +1,11 @@
 package com.generation.blogpessoal.controller;
 
-import com.generation.blogpessoal.dto.security.LoginDataDto;
-import com.generation.blogpessoal.dto.security.TokenDataDto;
-import com.generation.blogpessoal.dto.user.BodyDataUpdateUserDto;
-import com.generation.blogpessoal.dto.user.CompleteUpdateUserDto;
-import com.generation.blogpessoal.dto.user.CreateUserDto;
-import com.generation.blogpessoal.dto.user.UserInfoDto;
+import com.generation.blogpessoal.domain.dto.security.LoginDataDto;
+import com.generation.blogpessoal.domain.dto.security.TokenDataDto;
+import com.generation.blogpessoal.domain.dto.user.BodyDataUpdateUserDto;
+import com.generation.blogpessoal.domain.dto.user.CompleteUpdateUserDto;
+import com.generation.blogpessoal.domain.dto.user.CreateUserDto;
+import com.generation.blogpessoal.domain.dto.user.UserInfoDto;
 import com.generation.blogpessoal.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

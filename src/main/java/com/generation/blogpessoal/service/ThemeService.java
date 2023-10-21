@@ -1,10 +1,10 @@
 package com.generation.blogpessoal.service;
 
-import com.generation.blogpessoal.dto.theme.CreateThemeDto;
-import com.generation.blogpessoal.dto.theme.ThemeInfoDto;
-import com.generation.blogpessoal.dto.theme.UpdateThemeDto;
-import com.generation.blogpessoal.model.Theme;
-import com.generation.blogpessoal.repository.ThemeRepository;
+import com.generation.blogpessoal.domain.dto.theme.CreateThemeDto;
+import com.generation.blogpessoal.domain.dto.theme.ThemeInfoDto;
+import com.generation.blogpessoal.domain.dto.theme.UpdateThemeDto;
+import com.generation.blogpessoal.domain.model.Theme;
+import com.generation.blogpessoal.domain.repository.ThemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

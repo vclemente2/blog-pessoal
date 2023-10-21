@@ -1,13 +1,13 @@
 package com.generation.blogpessoal.service;
 
-import com.generation.blogpessoal.dto.security.LoginDataDto;
-import com.generation.blogpessoal.dto.security.TokenDataDto;
-import com.generation.blogpessoal.dto.user.CompleteUpdateUserDto;
-import com.generation.blogpessoal.dto.user.CreateUserDto;
-import com.generation.blogpessoal.dto.user.UserInfoDto;
-import com.generation.blogpessoal.model.User;
-import com.generation.blogpessoal.repository.UserRepository;
-import com.generation.blogpessoal.security.JwtService;
+import com.generation.blogpessoal.domain.dto.security.LoginDataDto;
+import com.generation.blogpessoal.domain.dto.security.TokenDataDto;
+import com.generation.blogpessoal.domain.dto.user.CompleteUpdateUserDto;
+import com.generation.blogpessoal.domain.dto.user.CreateUserDto;
+import com.generation.blogpessoal.domain.dto.user.UserInfoDto;
+import com.generation.blogpessoal.domain.model.User;
+import com.generation.blogpessoal.domain.repository.UserRepository;
+import com.generation.blogpessoal.infra.security.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
