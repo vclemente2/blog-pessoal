@@ -1,6 +1,6 @@
-CREATE TABLE tb_posts(
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE tb_posts (
+    id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     content VARCHAR(1000) NOT NULL,
-    date DATETIME(6)
+    date TIMESTAMP
 );
