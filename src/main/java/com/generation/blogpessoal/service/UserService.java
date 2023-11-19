@@ -93,7 +93,6 @@ public class UserService implements BaseService<CreateUserDto, CompleteUpdateUse
         return new UserInfoDto(user.get());
     }
 
-
     private boolean isUserExistsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
@@ -119,6 +118,12 @@ public class UserService implements BaseService<CreateUserDto, CompleteUpdateUse
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
         userRepository.delete(user.get());
+    }
+
+    public UserInfoDto findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(response -> new UserInfoDto(response))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
     }
 
     public TokenDataDto authenticateUser(LoginDataDto loginData) {

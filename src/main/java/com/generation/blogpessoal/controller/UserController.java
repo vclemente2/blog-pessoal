@@ -49,6 +49,11 @@ public class UserController {
         return ResponseEntity.ok(userService.findById(id));
     }
 
+    @GetMapping("/{email}")
+    public ResponseEntity<UserInfoDto> getByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(userService.findByEmail(email));
+    }
+
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<UserInfoDto> update(@RequestHeader("Authorization") String token, @PathVariable Long id, @Valid @RequestBody BodyDataUpdateUserDto data) {
